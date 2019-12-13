@@ -15,6 +15,7 @@ class EventsController < ApplicationController
 
   # POST /events
   def create
+    # byebug
     @event = Event.new(event_params)
 
     if @event.save
@@ -46,6 +47,6 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.fetch(:event, {})
+      params.require(:event).permit(:name, :description, :date, :venue)
     end
 end
