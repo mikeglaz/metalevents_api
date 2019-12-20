@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
-  resources :users
   resources :events
+  resources :users do
+    collection do
+      post 'confirm'
+    end
+  end
 
-  post 'auth/login', to: 'authentication#authenticate'
   post 'signup', to: 'users#create'
 
+  get '/activation/:token', to: 'users#activation'
 
 end

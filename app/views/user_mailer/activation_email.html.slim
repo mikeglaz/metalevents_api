@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    meta[content="text/html; charset=UTF-8" http-equiv="Content-Type"]
+  body
+    p
+      | Hello&nbsp;
+      = @user.name
+      |,
+    p
+      | Thanks for signing up for Metalevents!
+
+    p
+      | Click on the following link to active your account:
+
+    / = link_to "Activate my account", activation_url(@user.activation_token, email: @user.email)

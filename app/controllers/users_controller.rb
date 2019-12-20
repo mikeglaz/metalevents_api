@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  skip_before_action :authorize_request, only: :create
 
   # GET /users
   def index
@@ -16,21 +15,15 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    # @user = User.new(user_params)
+    @user = User.new(user_params)
 
     # if @user.save
-    #   render json: @user, status: :created, location: @user
+      # UserMailer.activation_email(@user).deliver_now
+    UserMailer.activation_email(@user).deliver_now
+    #   render json: { status: 'User created successfully', status: :created, location: @user }
     # else
     #   render json: @user.errors, status: :unprocessable_entity
     # end
-
-    user = User.create!(user_params)
-
-    auth_token = AuthenticateUser.new(user.email, user.password).call
-    response = { message: Message.account_created, auth_token: auth_token }
-
-    render json: response, status: :created, location: user
-
   end
 
   # PATCH/PUT /users/1
@@ -45,6 +38,18 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user.destroy
+  end
+
+  def activation
+    user = User.find_by(email: params[:email])
+
+    if user&.authenticated?(:activation_digest, params[:token])
+      user.update_attribute(:activated, true)
+      render json: { status: 'User activated successfully.'}, status: :ok
+    else
+      render json: { status: 'Invalid token.' }, status: :not_found
+    end
+
   end
 
   private
