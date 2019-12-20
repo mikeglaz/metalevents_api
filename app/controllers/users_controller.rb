@@ -17,13 +17,13 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    # if @user.save
-      # UserMailer.activation_email(@user).deliver_now
-    UserMailer.activation_email(@user).deliver_now
-    #   render json: { status: 'User created successfully', status: :created, location: @user }
-    # else
-    #   render json: @user.errors, status: :unprocessable_entity
-    # end
+    if @user.save
+      UserMailer.activation_email(@user).deliver_now
+      # render json: { status: 'User created successfully', status: :created, location: @user }
+      render json: @user
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /users/1
@@ -50,6 +50,21 @@ class UsersController < ApplicationController
       render json: { status: 'Invalid token.' }, status: :not_found
     end
 
+  end
+
+  def login
+    user = User.find_by(email: params[:email].downcase)
+
+    if user&.authenticate(params[:password])
+      if user.activated?
+        auth_token = JsonWebToken.encode({ user_id: user.id })
+        render json: { auth_token: auth_token, user: user }, status: :ok
+      else
+        render json: { error: 'User not yet activated.'}, status: :unauthorized
+      end
+    else
+      render json: { error: 'Invalid username/password.'}, status: :unauthorized
+    end
   end
 
   private

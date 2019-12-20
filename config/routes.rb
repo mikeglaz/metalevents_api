@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   end
 
   post 'signup', to: 'users#create'
+  post 'login', to: 'users#login'
 
-  get '/activation/:token', to: 'users#activation'
+  get '/activation/:token', to: 'users#activation', as: 'activation'
 
 end
