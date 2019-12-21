@@ -19,8 +19,8 @@ class UsersController < ApplicationController
 
     if @user.save
       UserMailer.activation_email(@user).deliver_now
-      # render json: { status: 'User created successfully', status: :created, location: @user }
-      render json: @user
+      render json: @user, status: :created
+      # render json: @user
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -59,6 +59,7 @@ class UsersController < ApplicationController
       if user.activated?
         auth_token = JsonWebToken.encode({ user_id: user.id })
         render json: { auth_token: auth_token, user: user }, status: :ok
+        # render json: user.merge(auth_token)
       else
         render json: { error: 'User not yet activated.'}, status: :unauthorized
       end
