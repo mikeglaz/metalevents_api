@@ -61,7 +61,7 @@ class UsersController < ApplicationController
     if user&.authenticate(params[:password])
       if user.activated?
         auth_token = JsonWebToken.encode({ user_id: user.id })
-        render json: { token: auth_token, id: user.id, name: user.name, email: user.email }, status: :ok
+        render json: { token: auth_token, id: user.id, name: user.name, email: user.email, admin: user.admin }, status: :ok
         # render json: user.merge(auth_token)
       else
         render json: { message: 'User not yet activated.'}, status: :unauthorized
