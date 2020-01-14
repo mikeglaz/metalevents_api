@@ -16,14 +16,13 @@ class ApplicationController < ActionController::API
 
     # Returns 401 response. To handle malformed / invalid requests.
     def invalid_authentication
-      render json: {error: 'Invalid Request'}, status: :unauthorized
+      render json: { message: 'Unauthorized'}, status: :unauthorized
     end
 
     private
       # Deconstructs the Authorization header and decodes the JWT token.
       def payload
-        auth_header = request.headers['Authorization']
-        token = auth_header.split(' ').last
+        token = request.headers['Authorization']
         JsonWebToken.decode(token)
       rescue
         nil
