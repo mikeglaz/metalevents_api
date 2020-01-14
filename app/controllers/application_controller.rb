@@ -4,16 +4,14 @@ class ApplicationController < ActionController::API
   protected
     # Validates the token and user and sets the @current_user scope
     def authorize_request!
-      # if !payload || !JsonWebToken.valid_payload(payload.first)
-      #   return invalid_authentication
-      # end
-
-      # load_current_user!
-      # invalid_authentication unless @current_user
-      # byebug
-      if !payload
-        render json: {error: 'Invalid Request'}, status: :unauthorized
+      if !payload #|| !JsonWebToken.valid_payload(payload.first)
+        return invalid_authentication
       end
+
+      load_current_user!
+      invalid_authentication unless @current_user
+      # byebug
+
     end
 
     # Returns 401 response. To handle malformed / invalid requests.
@@ -33,6 +31,6 @@ class ApplicationController < ActionController::API
 
       # Sets the @current_user with the user_id from payload
       def load_current_user!
-        @current_user = User.find_by(id: payload[0]['user_id'])
+        @current_user = User.find(payload[0]['user_id'])
       end
 end

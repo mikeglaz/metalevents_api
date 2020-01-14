@@ -1,6 +1,6 @@
 Event.seed do |s|
   s.id = 1
-  # s.user_id = 1
+  s.user_id = 1
   # s.venue_id = 3
   s.venue = 'Regies Rock Club'
   s.name = 'Abigor'
@@ -10,7 +10,7 @@ end
 
 Event.seed do |s|
   s.id = 2
-  # s.user_id = 1
+  s.user_id = 1
   # s.venue_id = 3
   s.venue = 'Regies Rock Club'
   s.name = 'Ghost'
@@ -20,7 +20,7 @@ end
 
 Event.seed do |s|
   s.id = 3
-  # s.user_id = 2
+  s.user_id = 2
   # s.venue_id = 1
   s.venue = 'Regies Rock Club'
   s.name = 'Metallica'
@@ -30,7 +30,7 @@ end
 
 Event.seed do |s|
   s.id = 4
-  # s.user_id = 2
+  s.user_id = 2
   # s.venue_id = 2
   s.venue = 'Regies Rock Club'
   s.name = 'Arcturus'
@@ -40,7 +40,7 @@ end
 
 Event.seed do |s|
   s.id = 5
-  # s.user_id = 3
+  s.user_id = 2
   # s.venue_id = 3
   s.venue = 'Regies Rock Club'
   s.name = 'Opeth'
@@ -50,7 +50,7 @@ end
 
 Event.seed do |s|
   s.id = 6
-  # s.user_id = 1
+  s.user_id = 2
   # s.venue_id = 3
   s.venue = 'Regies Rock Club'
   s.name = 'Animals As Leaders'

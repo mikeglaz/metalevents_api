@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy]
 
-  # before_action :authorize_request! , only: :index
+  before_action :authorize_request! , only: [:create, :update, :destroy]
 
   # GET /events
   def index
@@ -17,8 +17,7 @@ class EventsController < ApplicationController
 
   # POST /events
   def create
-    # byebug
-    @event = Event.new(event_params)
+    @event = @current_user.events.build(event_params)
 
     if @event.save
       render json: @event, status: :created, location: @event
@@ -29,16 +28,25 @@ class EventsController < ApplicationController
 
   # PATCH/PUT /events/1
   def update
-    if @event.update(event_params)
+    if @current_user.events.find(@event.id) && @event.update(event_params)
       render json: @event
     else
       render json: @event.errors, status: :unprocessable_entity
     end
+
+    rescue ActiveRecord::RecordNotFound
+      render json: { message: 'Unauthorized.' }, status: :unauthorized
   end
 
   # DELETE /events/1
   def destroy
-    @event.destroy
+    if @current_user.events.find(@event.id)
+      @event.destroy
+      render json: @event
+    end
+
+    rescue ActiveRecord::RecordNotFound
+      render json: { message: 'Unauthorized.' }, status: :unauthorized
   end
 
   private

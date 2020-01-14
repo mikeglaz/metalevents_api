@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :events
+
   has_secure_password
 
   attr_accessor :activation_token, :password_reset_token

@@ -60,7 +60,7 @@ class UsersController < ApplicationController
 
     if user&.authenticate(params[:password])
       if user.activated?
-        token = JsonWebToken.encode({ user_id: user.id, email: user.email, name: user.name, admin: user.admin })
+        token = JsonWebToken.encode({ id: user.id, email: user.email, name: user.name, admin: user.admin })
 
         render json: { token: token }, status: :ok
 

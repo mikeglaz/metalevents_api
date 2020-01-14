@@ -12,6 +12,10 @@ class JsonWebToken
   rescue
     nil
   end
+
+  # def self.expired(payload)
+  #   Time.at(payload[:expiresIn]) < Time.now
+  # end
 end
 
 # class JsonWebToken
