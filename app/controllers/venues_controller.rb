@@ -1,5 +1,6 @@
 class VenuesController < ApplicationController
   before_action :set_venue, only: [:show, :update, :destroy]
+  before_action :authorize_request!, only: [:create, :update, :destroy]
 
   # GET /venues
   def index
@@ -46,6 +47,7 @@ class VenuesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def venue_params
-      params.fetch(:venue, {})
+      # params.fetch(:venue, {})
+      params.require(:venue).permit(:name, :address, :city, :state, :url)
     end
 end
