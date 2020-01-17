@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :password_reset, only: [:create, :edit, :update]
+
   post 'signup', to: 'users#create'
   post 'login', to: 'users#login'
 

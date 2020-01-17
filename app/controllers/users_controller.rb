@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
 
-  before_action :authorize_request!, except: [:activation, :login]
+  before_action :authorize_request!, except: [:activation, :login, :create]
   # GET /users
   def index
     @users = User.all
@@ -51,9 +51,12 @@ class UsersController < ApplicationController
 
     if user&.authenticated?(:activation_digest, params[:token])
       user.update_attribute(:activated, true)
-      render json: { status: 'User activated successfully.'}, status: :ok
+      # render json: { status: 'User activated successfully.'}, status: :ok
+      # render 'users/activation'
+      redirect_to "http://localhost:4200/auth/activation"
     else
-      render json: { status: 'Invalid token.' }, status: :not_found
+      redirect_to "http://localhost:4200/auth/activation_error"
+      # render json: { status: 'Invalid token.' }, status: :not_found
     end
 
   end
@@ -85,6 +88,6 @@ class UsersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def user_params
       #params.require(:user).permit(:name, :email, :password_digest, :activated, :admin, :activation_digest, :password_reset_digest)
-      params.require(:user).permit(:name, :email)
+      params.permit(:name, :email, :password)
     end
 end
