@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
 
+  before_action :authorize_request!, except: [:activation, :login]
   # GET /users
   def index
     @users = User.all
@@ -31,7 +32,7 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
+    if @current_user.admin? && @user.update(user_params)
       render json: @user
     else
       render json: @user.errors, status: :unprocessable_entity
@@ -40,7 +41,9 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user.destroy
+    if @current_user.admin?
+      @user.destroy
+    end
   end
 
   def activation
@@ -82,6 +85,6 @@ class UsersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def user_params
       #params.require(:user).permit(:name, :email, :password_digest, :activated, :admin, :activation_digest, :password_reset_digest)
-      params.permit(:name, :email, :password)
+      params.require(:user).permit(:name, :email)
     end
 end
