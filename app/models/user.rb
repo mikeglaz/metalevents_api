@@ -6,7 +6,8 @@ class User < ApplicationRecord
   attr_accessor :activation_token, :password_reset_token
 
   before_save :downcase_email
-  before_create :create_activation_digest
+  # before_create :create_activation_digest
+  before_create :create_activation_token
 
   def authenticated?(digest_type, token)
     digest = self.send(digest_type)
@@ -37,8 +38,13 @@ class User < ApplicationRecord
       SecureRandom.urlsafe_base64
     end
 
-    def create_activation_digest
-      self.activation_token = self.class.generate_token
-      self.activation_digest = self.class.encrypt_token(activation_token)
+    # def create_activation_digest
+    #   self.activation_token = self.class.generate_token
+    #   self.activation_digest = self.class.encrypt_token(activation_token)
+    # end
+
+    def create_activation_token
+      payload = { email: self.email }
+      self.activation_token = JsonWebToken.encode(payload)
     end
 end

@@ -49,7 +49,7 @@ class UsersController < ApplicationController
   def activation
     user = User.find_by(email: params[:email])
 
-    if user&.authenticated?(:activation_digest, params[:token])
+    if user&.authenticate_digest(:activation_digest, params[:token])
       user.update_attribute(:activated, true)
       # render json: { status: 'User activated successfully.'}, status: :ok
       # render 'users/activation'

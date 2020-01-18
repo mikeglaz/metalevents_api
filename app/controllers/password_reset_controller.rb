@@ -17,11 +17,12 @@ class PasswordResetController < ApplicationController
   def edit
     user = User.find_by(email: params[:email])
 
-    if user&.authenticated?(:password_reset_digest, params[:id])
-      # redirect_to "http://localhost:4200/auth/password-"
+    if user&.authenticate_digest(:password_reset_digest, params[:token])
+      # redirect_to "http://localhost:4200/auth/password-update"
+      token = JsonWebToken.encode({ })
     end
 
-    # unless user && user.authenticated?(:password_reset_digest, params[:id])
+    # unless user && user.authenticate(:password_reset_digest, params[:id])
     #   flash[:danger] = "Invalid reset token"
     #   redirect_to sign_in_path
     # end

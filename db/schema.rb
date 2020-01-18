@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 2020_01_14_220907) do
     t.string "password_digest"
     t.boolean "activated"
     t.boolean "admin"
-    t.string "activation_digest"
-    t.string "password_reset_digest"
+    t.string "activation_token"
+    t.string "password_reset_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

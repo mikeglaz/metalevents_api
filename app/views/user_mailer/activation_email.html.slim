@@ -13,4 +13,6 @@ html
     p
       | Click on the following link to active your account:
 
-    = link_to "Activate my account", activation_url(@user.activation_token, email: @user.email)
+    = link_to "Activate my account", activation_url(@user.activation_token)
+
+  / , email: @user.email)

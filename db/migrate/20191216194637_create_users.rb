@@ -6,8 +6,10 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :password_digest
       t.boolean :activated
       t.boolean :admin
-      t.string :activation_digest
-      t.string :password_reset_digest
+      t.string :activation_token
+      t.string :password_reset_token
+      # t.string :activation_digest
+      # t.string :password_reset_digest
 
       t.timestamps
     end
