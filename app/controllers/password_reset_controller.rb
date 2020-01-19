@@ -34,7 +34,6 @@ class PasswordResetController < ApplicationController
   end
 
   def update
-    byebug
     decoded_token = JsonWebToken.decode(params[:token])[0]
 
     if decoded_token
@@ -42,8 +41,9 @@ class PasswordResetController < ApplicationController
     end
 
     if user
-      token = JsonWebToken.encode({ email: user.email })
-      redirect_to "http://localhost:4200/auth/password-update/#{token}"
+      user.update_password(params[:password])
+      render json: { message: "Password has been successfully updated!"}, status: :created
+      # redirect_to "http://localhost:4200/auth/password-update/#{token}"
     else
       redirect_to "http://localhost:4200/auth/activation_error"
     end

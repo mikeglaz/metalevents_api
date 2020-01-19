@@ -25,6 +25,11 @@ class User < ApplicationRecord
     self.save
   end
 
+  def update_password(password)
+    self.password = password
+    self.save
+  end
+
   def send_password_reset_email
     UserMailer.password_reset_email(self).deliver_now
   end
