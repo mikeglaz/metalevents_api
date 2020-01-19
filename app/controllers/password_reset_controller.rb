@@ -18,8 +18,8 @@ class PasswordResetController < ApplicationController
     user = User.find_by(email: params[:email])
 
     if user&.authenticate_digest(:password_reset_digest, params[:token])
-      # redirect_to "http://localhost:4200/auth/password-update"
-      token = JsonWebToken.encode({ })
+      token = JsonWebToken.encode({})
+      redirect_to "http://localhost:4200/auth/password-update/?token=#{token}"
     end
 
     # unless user && user.authenticate(:password_reset_digest, params[:id])

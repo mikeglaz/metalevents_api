@@ -9,7 +9,7 @@ class User < ApplicationRecord
   # before_create :create_activation_digest
   before_create :create_activation_token
 
-  def authenticated?(digest_type, token)
+  def authenticate_digest(digest_type, token)
     digest = self.send(digest_type)
     BCrypt::Password.new(digest).is_password?(token)
   end
