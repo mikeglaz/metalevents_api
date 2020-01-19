@@ -33,9 +33,10 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @current_user.admin? && @user.update(user_params)
-      render json: @user
+      render json: { message: "User successfully updated!"}, status: :created
+      # render json: @user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: { error: @user.errors }, status: :unprocessable_entity
     end
   end
 
@@ -94,7 +95,8 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      #params.require(:user).permit(:name, :email, :password_digest, :activated, :admin, :activation_digest, :password_reset_digest)
-      params.permit(:name, :email, :password)
+      params.require(:user).permit(:name, :email, :password)
+
+      # params.permit(:name, :email, :password)
     end
 end
