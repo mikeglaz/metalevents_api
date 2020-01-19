@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 2020_01_14_220907) do
     t.string "name"
     t.string "email"
     t.string "password_digest"
-    t.boolean "activated"
-    t.boolean "admin"
+    t.boolean "activated", default: false
+    t.boolean "admin", default: false
     t.string "activation_token"
     t.string "password_reset_token"
     t.datetime "created_at", null: false

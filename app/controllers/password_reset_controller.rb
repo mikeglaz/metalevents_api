@@ -3,8 +3,9 @@ class PasswordResetController < ApplicationController
     user = User.find_by(email: params[:email])
 
     if user
-      user.reset_password
-      user.send_reset_password_email
+      # user.reset_password
+      user.create_reset_token
+      user.send_password_reset_email
 
       render json: { message: "Password reset instructions have been sent to #{user.email}."}, status: :created
       # flash[:info] = 'A password reset email has been sent'
@@ -15,28 +16,51 @@ class PasswordResetController < ApplicationController
   end
 
   def edit
-    user = User.find_by(email: params[:email])
+    decoded_token = JsonWebToken.decode(params[:token])[0]
 
-    if user&.authenticate_digest(:password_reset_digest, params[:token])
-      token = JsonWebToken.encode({})
-      redirect_to "http://localhost:4200/auth/password-update/?token=#{token}"
+    if decoded_token
+      user = User.find_by(email: decoded_token['email'])
     end
 
-    # unless user && user.authenticate(:password_reset_digest, params[:id])
-    #   flash[:danger] = "Invalid reset token"
-    #   redirect_to sign_in_path
-    # end
+    if user
+      token = JsonWebToken.encode({ email: user.email })
+      redirect_to "http://localhost:4200/auth/password-update/#{token}"
+    else
+      redirect_to "http://localhost:4200/auth/activation_error"
+    end
+
+    rescue JWT::VerificationError, JWT::ExpiredSignature, JWT::DecodeError
+      redirect_to "http://localhost:4200/auth/activation_error"
   end
 
   def update
-    user = User.find_by(email: params[:email])
+    byebug
+    decoded_token = JsonWebToken.decode(params[:token])[0]
 
-    if user.update_attributes(user_params)
-      flash[:success] = 'Password updated!'
-      redirect_to sign_in_path
-    else
-      render :edit
+    if decoded_token
+      user = User.find_by(email: decoded_token['email'])
     end
+
+    if user
+      token = JsonWebToken.encode({ email: user.email })
+      redirect_to "http://localhost:4200/auth/password-update/#{token}"
+    else
+      redirect_to "http://localhost:4200/auth/activation_error"
+    end
+
+    rescue JWT::VerificationError, JWT::ExpiredSignature, JWT::DecodeError
+      redirect_to "http://localhost:4200/auth/activation_error"
   end
+
+  # def update
+  #   user = User.find_by(email: params[:email])
+
+  #   if user.update_attributes(user_params)
+  #     flash[:success] = 'Password updated!'
+  #     redirect_to sign_in_path
+  #   else
+  #     render :edit
+  #   end
+  # end
 
 end

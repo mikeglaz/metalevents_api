@@ -47,9 +47,13 @@ class UsersController < ApplicationController
   end
 
   def activation
-    user = User.find_by(email: params[:email])
+    decoded_token = JsonWebToken.decode(params[:token])[0]
 
-    if user&.authenticate_digest(:activation_digest, params[:token])
+    if decoded_token
+      user = User.find_by(email: decoded_token['email'])
+    end
+
+    if user #&.authenticate_digest(:activation_digest, params[:token])
       user.update_attribute(:activated, true)
       # render json: { status: 'User activated successfully.'}, status: :ok
       # render 'users/activation'
@@ -58,6 +62,9 @@ class UsersController < ApplicationController
       redirect_to "http://localhost:4200/auth/activation_error"
       # render json: { status: 'Invalid token.' }, status: :not_found
     end
+
+    rescue JWT::VerificationError, JWT::ExpiredSignature, JWT::DecodeError
+      redirect_to "http://localhost:4200/auth/activation_error"
 
   end
 

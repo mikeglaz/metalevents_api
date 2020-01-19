@@ -14,13 +14,18 @@ class User < ApplicationRecord
     BCrypt::Password.new(digest).is_password?(token)
   end
 
+  def create_reset_token
+    payload = { email: self.email }
+    self.password_reset_token = JsonWebToken.encode(payload)
+  end
+
   def reset_password
     self.password_reset_token = self.class.generate_token
     self.password_reset_digest = self.class.encrypt_token(password_reset_token)
     self.save
   end
 
-  def send_reset_password_email
+  def send_password_reset_email
     UserMailer.password_reset_email(self).deliver_now
   end
 

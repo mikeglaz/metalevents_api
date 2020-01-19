@@ -9,8 +9,8 @@ class JsonWebToken
 
   def self.decode(token)
     JWT.decode(token, HMAC_SECRET, true, algorithm: 'HS256')
-  rescue
-    nil
+  # rescue
+  #   [nil]
   end
 
   def self.expired(payload)

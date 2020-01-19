@@ -7,11 +7,11 @@ User.seed do |s|
   s.activated = true
 end
 
-User.seed do |s|
-  s.id = 2
-  s.name = 'Mike Gmail'
-  s.email = 'mikeglaz@gmail.com'
-  s.password = 'a'
-  s.admin = false
-  s.activated = true
-end
+# User.seed do |s|
+#   s.id = 2
+#   s.name = 'Mike Gmail'
+#   s.email = 'mikeglaz@gmail.com'
+#   s.password = 'a'
+#   s.admin = false
+#   s.activated = true
+# end
