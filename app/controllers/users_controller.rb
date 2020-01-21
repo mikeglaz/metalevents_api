@@ -32,8 +32,11 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @current_user.admin? && @user.update(user_params)
-      render json: { message: "User successfully updated!"}, status: :created
+    # byebug
+    if @current_user.admin? || @current_user == @user
+      @user.update(user_params)
+      render json: @user, status: :created
+      # render json: { message: "User successfully updated!"}, status: :created
       # render json: @user
     else
       render json: { error: @user.errors }, status: :unprocessable_entity
