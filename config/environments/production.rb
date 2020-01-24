@@ -32,6 +32,23 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
 
+  # Don't care if the mailer can't send.
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.perform_caching = true
+
+  config.action_mailer.smtp_settings = {
+    :user_name => 'apikey',
+    :password => Rails.application.credentials.sendgrid_api_key,
+    :domain => 'metalevents.mikeglaz.com',
+    :address => 'smtp.sendgrid.net',
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
+
+  config.action_mailer.default_url_options = { host: 'mikeglaz.com', protocol: 'http' }
+
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'

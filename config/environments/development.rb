@@ -46,7 +46,7 @@ Rails.application.configure do
 
   config.action_mailer.smtp_settings = {
     :user_name => 'apikey',
-    :password => Rails.application.credentials.dig(:sendgrid_api_key),
+    :password => Rails.application.credentials.sendgrid_api_key,
     :domain => 'mikeglaz.com',
     :address => 'smtp.sendgrid.net',
     :port => 587,

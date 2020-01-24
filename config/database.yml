@@ -50,5 +50,5 @@ test:
 production:
   <<: *default
   database: metalevents_api_production
-  username: metalevents_api
-  password: <%= ENV['METALEVENTS_API_DATABASE_PASSWORD'] %>
+  username: mike
+  password: #<%= ENV['METALEVENTS_API_DATABASE_PASSWORD'] %>
