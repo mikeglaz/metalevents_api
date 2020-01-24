@@ -54,7 +54,7 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
 
-  config.action_mailer.default_url_options = { host: 'localhost:3002', protocol: 'http' }
+  config.action_mailer.default_url_options = { host: 'localhost:3000', protocol: 'http' }
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

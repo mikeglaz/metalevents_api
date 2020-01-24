@@ -47,7 +47,7 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
 
-  config.action_mailer.default_url_options = { host: 'mikeglaz.com', protocol: 'http' }
+  config.action_mailer.default_url_options = { host: 'api.mikeglaz.com', protocol: 'http' }
 
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
