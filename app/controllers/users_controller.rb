@@ -61,7 +61,8 @@ class UsersController < ApplicationController
       user.update_attribute(:activated, true)
       # render json: { status: 'User activated successfully.'}, status: :ok
       # render 'users/activation'
-      redirect_to "#{Rails.application.config.front_end}/auth/activation"
+      redirect_to "/auth/activation"
+      # redirect_to "#{Rails.application.config.front_end}/auth/activation"
     else
       redirect_to "#{Rails.application.config.front_end}/auth/activation_error"
       # render json: { status: 'Invalid token.' }, status: :not_found
