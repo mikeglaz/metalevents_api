@@ -49,6 +49,8 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'api.mikeglaz.com', protocol: 'http' }
 
+  config.front_end = 'metalevents.mikeglaz.com'
+
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'

@@ -61,14 +61,14 @@ class UsersController < ApplicationController
       user.update_attribute(:activated, true)
       # render json: { status: 'User activated successfully.'}, status: :ok
       # render 'users/activation'
-      redirect_to "http://localhost:4200/auth/activation"
+      redirect_to "#{Rails.application.config.front_end}/auth/activation"
     else
-      redirect_to "http://localhost:4200/auth/activation_error"
+      redirect_to "#{Rails.application.config.front_end}/auth/activation_error"
       # render json: { status: 'Invalid token.' }, status: :not_found
     end
 
     rescue JWT::VerificationError, JWT::ExpiredSignature, JWT::DecodeError
-      redirect_to "http://localhost:4200/auth/activation_error"
+      redirect_to "#{Rails.application.config.front_end}/auth/activation_error"
 
   end
 

@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::API
+  def initialize
 
+  end
 
   protected
     # Validates the token and user and sets the @current_user scope

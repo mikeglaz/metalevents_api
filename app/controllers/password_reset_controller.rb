@@ -24,13 +24,13 @@ class PasswordResetController < ApplicationController
 
     if user
       token = JsonWebToken.encode({ email: user.email })
-      redirect_to "http://localhost:4200/auth/password-update/#{token}"
+      redirect_to "#{Rails.application.config.front_end}/auth/password-update/#{token}"
     else
-      redirect_to "http://localhost:4200/auth/activation_error"
+      redirect_to "#{Rails.application.config.front_end}/auth/activation_error"
     end
 
     rescue JWT::VerificationError, JWT::ExpiredSignature, JWT::DecodeError
-      redirect_to "http://localhost:4200/auth/activation_error"
+      redirect_to "#{Rails.application.config.front_end}/auth/activation_error"
   end
 
   def update
@@ -45,11 +45,11 @@ class PasswordResetController < ApplicationController
       render json: { message: "Password has been successfully updated!"}, status: :created
       # redirect_to "http://localhost:4200/auth/password-update/#{token}"
     else
-      redirect_to "http://localhost:4200/auth/activation_error"
+      redirect_to "#{Rails.application.config.front_end}/auth/activation_error"
     end
 
     rescue JWT::VerificationError, JWT::ExpiredSignature, JWT::DecodeError
-      redirect_to "http://localhost:4200/auth/activation_error"
+      redirect_to "#{Rails.application.config.front_end}/auth/activation_error"
   end
 
   # def update
