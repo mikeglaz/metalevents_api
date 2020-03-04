@@ -104,9 +104,10 @@ GEM
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     nio4r (2.5.2)
-    nokogiri (1.10.7)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
-    puma (3.12.2)
+    puma (4.3.3)
+      nio4r (~> 2.0)
     rack (2.1.1)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
@@ -182,7 +183,8 @@ DEPENDENCIES
   jwt
   listen (>= 3.0.5, < 3.2)
   mysql2 (>= 0.4.4, < 0.6.0)
-  puma (~> 3.11)
+  nokogiri (>= 1.10.8)
+  puma (>= 3.12.4)
   rack-cors
   rails (~> 5.2.4)
   seed-fu
