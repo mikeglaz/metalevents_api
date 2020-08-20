@@ -1,4 +1,10 @@
 class User < ApplicationRecord
+  # has_secure_password
+  # has_secure_password :activation_token, validations: false
+  # has_secure_token :activation_token
+  # validates :name, presence: true
+  # validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
+
   has_many :events
 
   has_secure_password
