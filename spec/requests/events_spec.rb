@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Events", type: :request do
   describe "GET /events" do
-    let(:event) {
+    let!(:event) {
       create(:event)
     }
 
@@ -10,6 +10,7 @@ RSpec.describe "Events", type: :request do
       get events_path
       expect(response).to have_http_status(200)
       binding.pry
+      expect(JSON.parse(response.body)).to eq([event.attributes])
     end
   end
 end
