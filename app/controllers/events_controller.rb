@@ -17,6 +17,7 @@ class EventsController < ApplicationController
 
   # POST /events
   def create
+    # binding.pry
     @event = @current_user.events.build(event_params)
 
     if @event.save
