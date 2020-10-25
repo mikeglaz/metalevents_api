@@ -39,7 +39,7 @@ RSpec.describe "Events", type: :request do
       headers = login(user)
 
       put event_path(event.id), params: { event: new_event.attributes }, headers: headers
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(201)
       expect(JSON.parse(response.body)['name']).to eq(new_event.name)
     end
 

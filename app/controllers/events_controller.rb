@@ -30,7 +30,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     if @current_user.events.find(@event.id) && @event.update(event_params)
-      render json: @event
+      render json: @event, status: :created
     else
       render json: @event.errors, status: :unprocessable_entity
     end
