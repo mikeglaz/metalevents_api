@@ -47,6 +47,16 @@ RSpec.describe "Events", type: :request do
       expect(JSON.parse(response.body)['name']).to eq(new_event.name)
     end
 
+    it "events#destroy" do
+      login(user)
+
+      headers = { 'Authorization': JSON.parse(response.body)['token'] }
+
+      delete event_path(event.id), headers: headers
+      expect(response).to have_http_status(200)
+      expect(Event.all).to be_empty
+    end
+
   end
 end
 
