@@ -5,7 +5,7 @@ FactoryBot.define do
     user { create(:user) }
     venue { create(:venue) }
     name { Faker::Music.band }
-    description { Faker::Music.album }
+    description { "Covid World Tour 2020" }
     date { DateTime.now }
   end
 end
