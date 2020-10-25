@@ -9,8 +9,7 @@ RSpec.describe "Events", type: :request do
     it "works! (now write some real specs)" do
       get events_path
       expect(response).to have_http_status(200)
-      binding.pry
-      expect(JSON.parse(response.body)).to eq([event.attributes])
+      expect(JSON.parse(response.body)).to eq([JSON.parse(event.to_json)])
     end
   end
 end
