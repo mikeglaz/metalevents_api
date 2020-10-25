@@ -28,9 +28,7 @@ RSpec.describe "Events", type: :request do
     end
 
     it "events#create" do
-      login(user)
-
-      headers = { 'Authorization': JSON.parse(response.body)['token'] }
+      headers = login(user)
 
       post events_path, params: { event: new_event.attributes }, headers: headers
       expect(response).to have_http_status(201)
@@ -38,9 +36,7 @@ RSpec.describe "Events", type: :request do
     end
 
     it "events#update" do
-      login(user)
-
-      headers = { 'Authorization': JSON.parse(response.body)['token'] }
+      headers = login(user)
 
       put event_path(event.id), params: { event: new_event.attributes }, headers: headers
       expect(response).to have_http_status(200)
@@ -48,9 +44,7 @@ RSpec.describe "Events", type: :request do
     end
 
     it "events#destroy" do
-      login(user)
-
-      headers = { 'Authorization': JSON.parse(response.body)['token'] }
+      headers = login(user)
 
       delete event_path(event.id), headers: headers
       expect(response).to have_http_status(200)
@@ -62,4 +56,6 @@ end
 
 def login(user)
   post login_path, params: { email: user.email, password: user.password }
+
+  { 'Authorization': JSON.parse(response.body)['token'] }
 end
