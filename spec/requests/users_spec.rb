@@ -1,23 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
-  describe "CRUD /users" do
-    let(:user) {
-      create(:user)
-    }
+  let(:user) {
+    create(:user)
+  }
 
-    let(:admin_user) {
-      create(:user, admin: true)
-    }
+  let(:admin_user) {
+    create(:user, admin: true)
+  }
 
-    let(:new_user) {
-      build(:user, activated: false)
-    }
+  let(:new_user) {
+    build(:user, activated: false)
+  }
 
-    let(:unactivated_user) {
-      create(:user, activated: false)
-    }
+  let(:unactivated_user) {
+    create(:user, activated: false)
+  }
 
+  context "CRUD /users" do
     it "users#index" do
       headers = login(user)
       get users_path, headers: headers
@@ -58,30 +58,40 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(204)
       expect(User.find_by(id: user.id)).to be_nil
     end
+  end
 
-    context 'logging in' do
-      it 'activated user logs in' do
-        post login_path, params: { email: user.email, password: user.password }
+  context 'email activation' do
+    it 'activates unactivated user' do
+      params = { token: unactivated_user.activation_token }
+      get activation_path, params: params
 
-        expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)).to include('token')
-      end
+      unactivated_user.reload
 
-      it 'new user is not allowed' do
-        post login_path, params: { email: new_user.email, password: new_user.password }
+      expect(unactivated_user.activated).to eq(true)
+    end
+  end
 
-        expect(JSON.parse(response.body)['message']).to eq('Invalid username/password.')
-        expect(response).to have_http_status(401)
-      end
+  context 'logging in' do
+    it 'activated user logs in' do
+      post login_path, params: { email: user.email, password: user.password }
 
-      it 'unactivated user is not allowed' do
-        post login_path, params: { email: unactivated_user.email, password: unactivated_user.password }
-
-        expect(JSON.parse(response.body)['message']).to eq('User not yet activated.')
-        expect(response).to have_http_status(401)
-      end
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)).to include('token')
     end
 
+    it 'new user is not allowed' do
+      post login_path, params: { email: new_user.email, password: new_user.password }
+
+      expect(JSON.parse(response.body)['message']).to eq('Invalid username/password.')
+      expect(response).to have_http_status(401)
+    end
+
+    it 'unactivated user is not allowed' do
+      post login_path, params: { email: unactivated_user.email, password: unactivated_user.password }
+
+      expect(JSON.parse(response.body)['message']).to eq('User not yet activated.')
+      expect(response).to have_http_status(401)
+    end
   end
 end
 

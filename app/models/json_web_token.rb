@@ -1,8 +1,8 @@
 class JsonWebToken
   HMAC_SECRET = Rails.application.credentials.secret_key_base
 
-  def self.encode(payload, expiresIn = 1.hour.from_now)
-    payload[:exp] = expiresIn.to_i
+  def self.encode(payload, expires_in = 1.hour.from_now)
+    payload[:exp] = expires_in.to_i
 
     JWT.encode(payload, HMAC_SECRET, 'HS256')
   end
@@ -17,4 +17,3 @@ class JsonWebToken
     Time.at(payload[:exp]) < Time.now
   end
 end
-
