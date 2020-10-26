@@ -6,9 +6,15 @@ RSpec.describe "Users", type: :request do
       create(:user)
     }
 
+    let(:admin_user) {
+      create(:user, admin: true)
+    }
+
     let(:new_user) {
       build(:user, activated: false)
     }
+
+
 
     it "users#index" do
       headers = login(user)
@@ -41,6 +47,14 @@ RSpec.describe "Users", type: :request do
 
       expect(response).to have_http_status(201)
       expect(JSON.parse(response.body)['email']).to eq(new_user.email)
+    end
+
+    it "users#destroy" do
+      headers = login(admin_user)
+
+      delete user_path(user.id), headers: headers
+      expect(response).to have_http_status(204)
+      expect(User.find_by(id: user.id)).to be_nil
     end
   end
 end
