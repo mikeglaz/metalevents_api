@@ -56,6 +56,23 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(204)
       expect(User.find_by(id: user.id)).to be_nil
     end
+
+    context 'logging in' do
+      it 'activated user logs in' do
+        post login_path, params: { email: user.email, password: user.password }
+
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)).to include('token')
+      end
+
+      it 'new user is not allowed' do
+        post login_path, params: { email: new_user.email, password: new_user.password }
+
+        expect(JSON.parse(response.body)['message']).to eq('Invalid username/password.')
+        expect(response).to have_http_status(401)
+      end
+    end
+
   end
 end
 
