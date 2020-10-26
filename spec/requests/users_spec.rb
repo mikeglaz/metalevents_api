@@ -14,7 +14,9 @@ RSpec.describe "Users", type: :request do
       build(:user, activated: false)
     }
 
-
+    let(:unactivated_user) {
+      create(:user, activated: false)
+    }
 
     it "users#index" do
       headers = login(user)
@@ -69,6 +71,13 @@ RSpec.describe "Users", type: :request do
         post login_path, params: { email: new_user.email, password: new_user.password }
 
         expect(JSON.parse(response.body)['message']).to eq('Invalid username/password.')
+        expect(response).to have_http_status(401)
+      end
+
+      it 'unactivated user is not allowed' do
+        post login_path, params: { email: unactivated_user.email, password: unactivated_user.password }
+
+        expect(JSON.parse(response.body)['message']).to eq('User not yet activated.')
         expect(response).to have_http_status(401)
       end
     end
